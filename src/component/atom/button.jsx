@@ -23,13 +23,13 @@ const buttonVariant = {
 
 const StyledButton = styled.button`
   ${commonButtonStyle}
-  ${props => buttonVariant[props.variant || 'primary']}
+  ${props => buttonVariant[props.$variant || 'primary']}
   `
 
 function Button( {children, onClick, variant = 'primary', ...props}) {
   return (
     <StyledButton onClick={onClick}
-    variant={variant}
+    $variant={variant}
     {...props}>
       {children}
     </StyledButton>
