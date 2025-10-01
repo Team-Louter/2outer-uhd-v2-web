@@ -28,14 +28,14 @@ const commonButtonStyle = css`
 // 버튼 스타일을 variant 값에 따라 다르게 지정
 const buttonVariant = {
   primary: css`
-    background-color: #1A1E47; // 진한 남색 배경
-    color: #fff;              // 흰색 텍스트
+    background-color: #1A1E47;
+    color: #fff;
     border: none;
   `,
   secondary: css`
-    background-color: #fff;   // 흰색 배경
-    color: #1A1E47;           // 진한 남색 텍스트
-    border: solid 1px #808080; // 회색 테두리
+    background-color: #fff;
+    color: #1A1E47;
+    border: solid 1px #808080;
   `,
 };
 
