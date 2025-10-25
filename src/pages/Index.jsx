@@ -1,17 +1,11 @@
-import Button from "/src/component/atom/button";
-import Checkbox from "../component/atom/checkbox";
-import Input from "../component/atom/input";
-import Logo from "../component/atom/logo";
+import Header from "../component/organisms/header";
+import SectionHeader from "../component/molecules/sectionHeader";
 
 function Index() {
   return (
     <div>
-      <h3>test</h3>
-      <Input placeholder="아이디" />
-      <Button>기본 버튼</Button>
-      <Button variant="secondary">보조 버튼</Button>
-      <Checkbox />
-      <Logo />
+      <Header/>
+      <SectionHeader title={'최근 등록된 게시물'}/>
     </div>
   );
 }
