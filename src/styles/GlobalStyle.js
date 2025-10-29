@@ -5,8 +5,8 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'esamanru OTF';
     src: url('/fonts/esamanru-OTF.woff2') format('woff2'),
-         url('/fonts/esamanru-OTF.woff') format('woff'),
-         url('/fonts/esamanru-OTF.ttf') format('truetype');
+        url('/fonts/esamanru-OTF.woff') format('woff'),
+        url('/fonts/esamanru-OTF.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
   }

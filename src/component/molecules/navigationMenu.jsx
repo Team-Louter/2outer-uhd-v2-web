@@ -10,7 +10,7 @@ const Nav = styled.nav`
 const NavList = styled.ul`
   display: flex;
   list-style: none;
-  gap: 136px; /* 링크들 사이의 간격 */
+  gap: 11vw;
   margin: 0;
   padding: 0;
 `;
