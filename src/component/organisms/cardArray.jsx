@@ -103,7 +103,7 @@ const tempItems = [
 // 카드 올가니즘 컴포넌트
 const CardsOrganism = ({ cardsPerRow = 5 }) => { // cardsPerRow는 기본 5로 설정
   return (
-    // CardsGridContainer에 cardsPerRow 프롭스를 전달합니다.
+    // CardsGridContainer에 cardsPerRow 프롭스를 전달
     <CardsGridContainer cardsPerRow={cardsPerRow}>
       {tempItems.map((item) => (
         <Card
