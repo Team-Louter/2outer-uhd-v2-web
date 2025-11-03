@@ -21,6 +21,7 @@ const HeaderContainer = styled.header`
 
 const LogoContainer = styled.div`
   padding-left: 1.5rem; // 로고에 왼쪽 여백 1rem 추가
+
 `;
 
 const ButtonContainer = styled.div`
@@ -40,10 +41,14 @@ const Header = () => {
     navigate('/register-post');
   };
 
+  const handleIndexPageClick = () => {
+    navigate('/index')
+  }
+
   return (
     <HeaderContainer>
       <LogoContainer>
-        <Logo width={100} alt="로고" />
+        <Logo onClick = {handleIndexPageClick} width={100} alt="로고" />
       </LogoContainer>
       <NavigationMenu />
       <ButtonContainer>
