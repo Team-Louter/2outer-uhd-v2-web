@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   const handleIndexPageClick = () => {
-    navigate('/index')
+    navigate('/')
   }
 
   return (
