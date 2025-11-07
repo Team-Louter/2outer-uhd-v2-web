@@ -1,11 +1,21 @@
 import { createGlobalStyle } from 'styled-components';
-import { FONT_WEIGHTS } from './constants';
 
 const GlobalStyle = createGlobalStyle`
+  /* esamanru OTF 웹 폰트 추가 */
+  @font-face {
+    font-family: 'esamanru OTF';
+    src: url('/fonts/esamanru-OTF.woff2') format('woff2'),
+        url('/fonts/esamanru-OTF.woff') format('woff'),
+        url('/fonts/esamanru-OTF.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
   html, body, #root {
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   body {
@@ -13,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
     color: #333;
     background-color: #f8f8f8;
     line-height: 1.5;
-    font-weight: ${FONT_WEIGHTS.regular};
+    font-weight: 400;
   }
 
   button, input, select, textarea {

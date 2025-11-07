@@ -6,6 +6,7 @@ const commonButtonStyle = css`
   height: ${(props) => props.$height || '2.5625rem'};
   padding: 0.6875rem 0.9375rem;
   cursor: pointer;
+  font-weight: 600;
   border-radius: ${(props) => props.$borderRadius || '10px'};
 `;
 
@@ -15,12 +16,12 @@ const commonButtonStyle = css`
  *   - 'primary': 진한 남색 배경, 흰색 텍스트 (기본값)
  *   - 'secondary': 흰색 배경, 남색 텍스트 + 회색 테두리
  * @사용가능한_크기_및_모양_옵션
- *   - width: 버튼 가로 크기 (예: "200px", "10rem")
- *   - height: 버튼 세로 크기 (예: "60px")
+ *   - $width: 버튼 가로 크기 (예: "200px", "10rem")
+ *   - $height: 버튼 세로 크기 (예: "60px")
  *   - borderRadius: 버튼 모서리 둥글기 (예: "30px", "50%")
  * @예시
  *   <Button>기본 버튼</Button>
- *   <Button width="200px" height="60px">커스텀 크기 버튼</Button>
+ *   <Button $width="200px" $height="60px">커스텀 크기 버튼</Button>
  *   <Button borderRadius="30px" variant="secondary">둥근 버튼</Button>
  */
 
