@@ -16,11 +16,15 @@ const HeaderContainer = styled.header`
   border-bottom: 1px solid #e0e0e0;
   margin: 0;
   padding: 0;
-  cursor: pointer;
 `;
 
 const LogoContainer = styled.div`
   padding-left: 1.5rem; // 로고에 왼쪽 여백 1rem 추가
+  cursor: pointer;
+  
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -32,17 +36,21 @@ const ButtonContainer = styled.div`
 const Header = () => {
   const navigate = useNavigate();
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   const handleMyPageClick = () => {
-    navigate('/mypage');
+    navigate('/mypost');
   };
 
   const handlePostRegisterClick = () => {
-    navigate('/register-post');
+    navigate('/findit-register');
   };
 
   return (
     <HeaderContainer>
-      <LogoContainer>
+      <LogoContainer onClick={handleLogoClick}>
         <Logo width={100} alt="로고" />
       </LogoContainer>
       <NavigationMenu />
