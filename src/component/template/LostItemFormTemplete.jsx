@@ -7,7 +7,7 @@ const PageContainer = styled.div`
 `;
 
 const PageHeader = styled.div`
-  background-color: #2d3748;
+  background-color: #1a1e47;
   color: white;
   padding: 24px 32px;
 `;
@@ -18,16 +18,24 @@ const PageTitle = styled.h1`
   margin: 0;
 `;
 
+const PageDescription = styled.p`
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+`;
+
 const ContentArea = styled.main`
   padding: 24px;
 `;
 
-const LostItemFormTemplate = ({ children }) => {
+const LostItemFormTemplate = ({ title, description, children }) => {
   return (
     <PageContainer>
       <Header />
       <PageHeader>
-        <PageTitle>분실물 등록 - 내 물건</PageTitle>
+        <PageTitle>{title}</PageTitle>
+        {description && <PageDescription>{description}</PageDescription>}
       </PageHeader>
       <ContentArea>
         {children}

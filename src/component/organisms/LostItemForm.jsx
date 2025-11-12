@@ -34,18 +34,54 @@ const SubmitButtonContainer = styled.div`
 const categoryOptions = [
   { id: 'electronics', label: '전자기기' },
   { id: 'clothing', label: '의류/액세서리' },
-  { id: 'other', label: '기타' }
+  { id: 'other', label: '기타' },
 ];
 
-const LostItemForm = () => {
+const initialFormState = {
+  name: '',
+  location: '',
+  description: '',
+  categories: [],
+  file: null,
+};
+
+const formCopy = {
+  lost: {
+    labels: {
+      name: '물품명',
+      location: '위치',
+      description: '간단 설명',
+      category: '카테고리',
+    },
+    placeholders: {
+      name: '잃어버린 물건의 이름을 입력하세요',
+      location: '분실물이 있을 것으로 예상되는 위치를 입력해주세요',
+      description: '분실물에 대한 상세 설명을 입력하세요. (100자 이내)',
+    },
+    submitText: '분실물 등록',
+    endpoint: '/api/lost-item/register',
+  },
+  found: {
+    labels: {
+      name: '습득 물품명',
+      location: '습득 위치',
+      description: '보관/인계 정보',
+      category: '카테고리',
+    },
+    placeholders: {
+      name: '습득한 물품의 이름을 입력하세요',
+      location: '물건을 발견한 위치를 입력하세요',
+      description: '보관 장소나 전달 가능한 정보를 입력하세요. (100자 이내)',
+    },
+    submitText: '습득물 등록',
+    endpoint: '/api/found-item/register',
+  },
+};
+
+const LostItemForm = ({ mode = 'lost' }) => {
   // ✅ 입력값 상태 저장 (Controlled Components)
-  const [form, setForm] = useState({
-    name: '',
-    location: '',
-    description: '',
-    categories: [],
-    file: null
-  });
+  const [form, setForm] = useState(initialFormState);
+  const { labels, placeholders, submitText, endpoint } = formCopy[mode] || formCopy.lost;
 
   // ✅ 모든 필드 onChange 핸들러
   const handleChange = (field, value) => {
@@ -91,26 +127,19 @@ const LostItemForm = () => {
 
     try {
       // ✅ localhost or server 둘 다 자동 처리되도록 환경변수 사용
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
-      const response = await fetch(`${API_URL}/api/lost-item/register`, {
-        method: "POST",
-        body: formData
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        method: 'POST',
+        body: formData,
       });
 
-      if (!response.ok) throw new Error("서버 오류");
+      if (!response.ok) throw new Error('서버 오류');
 
-      alert("등록이 완료되었습니다!");
-      setForm({
-        name: '',
-        location: '',
-        explain: '',
-        categoriy: [],
-        imagePath: ''
-      });
+      alert('등록이 완료되었습니다!');
+      setForm(initialFormState);
     } catch (error) {
       console.error(error);
-      alert("등록 중 문제가 발생했습니다.");
+      alert('등록 중 문제가 발생했습니다.');
     }
   };
 
@@ -119,32 +148,32 @@ const LostItemForm = () => {
       <FormContent>
         <LeftColumn>
           <InputField
-            label="물품명"
+            label={labels.name}
             required
             value={form.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            placeholder="잃어버린 물건의 이름을 입력하세요"
+            onChange={(e) => handleChange('name', e.target.value)}
+            placeholder={placeholders.name}
           />
 
           <InputField
-            label="위치"
+            label={labels.location}
             required
             value={form.location}
-            onChange={(e) => handleChange("location", e.target.value)}
-            placeholder="분실물의 위치, 장소를 예상되는 곳까지 넓혀보세요"
+            onChange={(e) => handleChange('location', e.target.value)}
+            placeholder={placeholders.location}
           />
 
           <TextAreaField
-            label="간단 설명"
+            label={labels.description}
             required
             value={form.description}
-            onChange={(e) => handleChange("description", e.target.value)}
-            placeholder="분실물에 대한 간단한 설명을 붙이세요. (100자 이내)"
+            onChange={(e) => handleChange('description', e.target.value)}
+            placeholder={placeholders.description}
             maxLength={100}
           />
 
           <CheckboxGroup
-            label="카테고리"
+            label={labels.category}
             required
             options={categoryOptions}
             value={form.categories}
@@ -158,7 +187,7 @@ const LostItemForm = () => {
 
         <SubmitButtonContainer>
           <Button type="submit" fullWidth size="large">
-            게시
+            {submitText}
           </Button>
         </SubmitButtonContainer>
       </FormContent>
