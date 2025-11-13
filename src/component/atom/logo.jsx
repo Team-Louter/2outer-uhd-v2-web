@@ -21,6 +21,6 @@ const Img = styled.img`
     p.height ? (typeof p.height === "number" ? `${p.height}px` : p.height) : "auto"};
 `;
 
-export default function Logo({ src = defaultLogo, alt = "MyBrand", width, height }) {
-  return <Img src={src} alt={alt} width={width} height={height} />;
+export default function Logo({ src = defaultLogo, alt = "MyBrand", width, height, onClick}) {
+  return <Img src={src} alt={alt} width={width} height={height} onClick={onClick}/>;
 }

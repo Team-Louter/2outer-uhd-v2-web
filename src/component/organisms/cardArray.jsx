@@ -7,7 +7,7 @@ const CardsGridContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px;
+  padding: 10px;
   justify-content: center;
 
   max-width: ${({ cardsPerRow }) =>
@@ -76,10 +76,26 @@ const tempItems = [
   {
     id: 8,
     imageUrl: exCardImg,
-    ownerType: '네 물건',
-    itemName: '교재',
+    ownerType: '내 물건',
+    itemName: '컴일 교과서',
     timePosted: '1주일 전',
     foundPlace: '강의실 301호'
+  },
+  {
+    id: 9,
+    imageUrl: exCardImg,
+    ownerType: '네 물건',
+    itemName: '파우치',
+    timePosted: '2주일 전',
+    foundPlace: '강의실 303호'
+  },
+  {
+    id: 10,
+    imageUrl: exCardImg,
+    ownerType: '내 물건',
+    itemName: '텀블러',
+    timePosted: '4일 전',
+    foundPlace: '강의실 102호'
   }
 ];
 
@@ -87,7 +103,7 @@ const tempItems = [
 // 카드 올가니즘 컴포넌트
 const CardsOrganism = ({ cardsPerRow = 5 }) => { // cardsPerRow는 기본 5로 설정
   return (
-    // CardsGridContainer에 cardsPerRow 프롭스를 전달합니다.
+    // CardsGridContainer에 cardsPerRow 프롭스를 전달
     <CardsGridContainer cardsPerRow={cardsPerRow}>
       {tempItems.map((item) => (
         <Card

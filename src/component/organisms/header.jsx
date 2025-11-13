@@ -135,6 +135,10 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
+  const handleIndexPageClick = () => {
+    navigate('/')
+  }
+
   return (
     <HeaderContainer>
       <LogoContainer onClick={handleLogoClick}>
