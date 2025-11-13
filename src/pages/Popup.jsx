@@ -1,11 +1,1 @@
-import Header from "../component/organisms/header";
-
-function Popup() {
-  return (
-    <div>
-      <Header />
-    </div>
-  );
-}
-
-export default Popup;
+//헤더에서 처리

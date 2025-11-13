@@ -25,13 +25,13 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/intro" element={<Intro />} />
           <Route path="/find" element={<Find />} />
-          <Route path="/found" element={<Found />} />
+          <Route path="/found" element={<Found />} />*/}
           <Route path="/findit-register" element={<FindItRegister />} />
           <Route path="/found-register" element={<FoundRegister />} />
-          <Route path="/signin" element={<SignIn />} />
+          {/*<Route path="/signin" element={<SignIn />} />
           <Route path="/signup-id" element={<SignupID />} />
           <Route path="/signup-pw" element={<SignupPW />} />
-          <Route path="/signup-school" element={<SignupSchool />} />
+          <Route path="/signup-school" element={<SignupSchool />} />*/}
           <Route path="/mypost" element={<MyPost />} />
           <Route path="/popup" element={<Popup />} />
           <Route path="/mypage" element={<MyPage />} />
@@ -39,7 +39,7 @@ function App() {
       </div>
     </Router>
     </>
-  );2
+  );
 }
 
 export default App;
