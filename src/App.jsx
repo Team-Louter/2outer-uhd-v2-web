@@ -11,7 +11,6 @@ import SignupID from "./pages/SignupID";
 import SignupPW from "./pages/SignupPW";
 import SignupSchool from "./pages/SignupSchool";
 import MyPost from "./pages/MyPost";
-import Popup from "./pages/Popup";
 import MyPage from "./pages/MyPage";
 import GlobalStyle from "./styles/GlobalStyle";
 import PostDetail from "./pages/PostDetail";
@@ -34,7 +33,6 @@ function App() {
           <Route path="/signup-pw" element={<SignupPW />} />
           <Route path="/signup-school" element={<SignupSchool />} />*/}
             <Route path='/mypost' element={<MyPost />} />
-            <Route path='/popup' element={<Popup />} />
             <Route path='/mypage' element={<MyPage />} />
             <Route path='/post-detail' element={<PostDetail />} />
           </Routes>
