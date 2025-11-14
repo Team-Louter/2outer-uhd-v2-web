@@ -140,8 +140,6 @@ const PostDetail = () => {
               <CategoryLabel>카테고리</CategoryLabel>
               <CategoryValue>{postData.category}</CategoryValue>
             </Category>
-
-            <RegisterButton>채팅하기</RegisterButton>
           </InfoSection>
         </ContentWrapper>
 

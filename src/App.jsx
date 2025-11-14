@@ -33,8 +33,8 @@ function App() {
           {/* <Route path="/signup-pw" element={<SignupPW />} /> */}
           {/* <Route path="/signup-school" element={<SignupSchool />} /> */}
           <Route path="/mypost" element={<MyPost />} />
-          <Route path="/popup" element={<Popup />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/post-detail" element={<PostDetail />} />
         </Routes>
       </div>
     </Router>
