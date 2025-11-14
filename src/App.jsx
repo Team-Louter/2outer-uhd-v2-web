@@ -1,19 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Index from './pages/Index';
-import Intro from './pages/Intro';
-import Find from './pages/Find';
-import Found from './pages/Found';
-import FindItRegister from './pages/FindItRegister';
-import FoundRegister from './pages/FoundRegister';
-import SignIn from './pages/SignIn';
-import SignupID from './pages/SignupID';
-import SignupPW from './pages/SignupPW';
-import SignupSchool from './pages/SignupSchool';
-import MyPost from './pages/MyPost';
-import Popup from './pages/Popup';
-import MyPage from './pages/MyPage';
-import GlobalStyle from './styles/GlobalStyle';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import Intro from "./pages/Intro";
+import Find from "./pages/Find";
+import Found from "./pages/Found";
+import FindItRegister from "./pages/FindItRegister";
+import FoundRegister from "./pages/FoundRegister";
+import SignIn from "./pages/SignIn";
+import SignupID from "./pages/SignupID";
+import SignupPW from "./pages/SignupPW";
+import SignupSchool from "./pages/SignupSchool";
+import MyPost from "./pages/MyPost";
+import MyPage from "./pages/MyPage";
+import GlobalStyle from "./styles/GlobalStyle";
+import PostDetail from "./pages/PostDetail";
 
 function App() {
   return (
