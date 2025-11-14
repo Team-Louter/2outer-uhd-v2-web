@@ -34,7 +34,7 @@ function App() {
           {/* <Route path="/signup-school" element={<SignupSchool />} /> */}
           <Route path="/mypost" element={<MyPost />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/post-detail" element={<PostDetail />} />
+          <Route path="/post-detail/:id" element={<PostDetail />} />
         </Routes>
       </div>
     </Router>
