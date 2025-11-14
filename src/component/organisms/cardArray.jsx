@@ -108,6 +108,7 @@ const CardsOrganism = ({ cardsPerRow = 5 }) => { // cardsPerRow는 기본 5로 �
       {tempItems.map((item) => (
         <Card
           key={item.id}
+          id={item.id}
           imageUrl={item.imageUrl}
           altText={`${item.itemName} 이미지`}
           ownerType={item.ownerType}

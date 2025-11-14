@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 // 1. 카드 전체 컨테이너
 const CardContainer = styled.div`
@@ -13,6 +14,13 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 // 2. 카드 이미지
@@ -74,9 +82,15 @@ const TimePosted = styled.span``;
 const FoundPlace = styled.span``;
 
 // 7. 카드 컴포넌트
-const Card = ({ imageUrl, altText, ownerType, itemName, timePosted, foundPlace }) => {
+const Card = ({ id, imageUrl, altText, ownerType, itemName, timePosted, foundPlace }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/post-detail/${id}`);
+  };
+
   return (
-    <CardContainer>
+    <CardContainer onClick={handleClick}>
       {imageUrl && <CardImage src={imageUrl} alt={altText || "카드 이미지"} />}
       <CardContent>
         <OwnerItemGap>
