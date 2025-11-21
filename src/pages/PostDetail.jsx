@@ -113,16 +113,6 @@ const PostDetail = () => {
         <ContentWrapper>
           <ImageSection>
             <img src={postData.image} alt={postData.title} />
-            <MetaInfo>
-              <div>
-                <MetaLabel>등록자</MetaLabel>
-                <MetaValue>{postData.registrant}</MetaValue>
-              </div>
-              <div>
-                <MetaLabel>등록일시</MetaLabel>
-                <MetaValue>{postData.registrationTime}</MetaValue>
-              </div>
-            </MetaInfo>
           </ImageSection>
 
           <InfoSection>
@@ -140,6 +130,16 @@ const PostDetail = () => {
               <CategoryLabel>카테고리</CategoryLabel>
               <CategoryValue>{postData.category}</CategoryValue>
             </Category>
+            <MetaInfo>
+              <div>
+                <MetaLabel>등록자</MetaLabel>
+                <MetaValue>{postData.registrant}</MetaValue>
+              </div>
+              <div>
+                <MetaLabel>등록일시</MetaLabel>
+                <MetaValue>{postData.registrationTime}</MetaValue>
+              </div>
+            </MetaInfo>
           </InfoSection>
         </ContentWrapper>
 

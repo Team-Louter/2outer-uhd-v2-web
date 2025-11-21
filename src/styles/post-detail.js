@@ -48,6 +48,7 @@ export const ImageSection = styled.div`
 `;
 
 export const MetaInfo = styled.div`
+  margin-top: 140px;
   display: flex;
   gap: 40px;
   font-size: 14px;
