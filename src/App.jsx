@@ -2,8 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Intro from "./pages/Intro";
-import Find from "./pages/Find";
-import Found from "./pages/Found";
+import List from "./pages/List";
 import FindItRegister from "./pages/FindItRegister";
 import FoundRegister from "./pages/FoundRegister";
 import SignIn from "./pages/SignIn";
@@ -24,8 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/intro" element={<Intro />} />
-          <Route path="/find" element={<Find />} />
-          <Route path="/found" element={<Found />} />
+          <Route path="/list" element={<List />} />
           <Route path="/findit-register" element={<FindItRegister />} />
           <Route path="/found-register" element={<FoundRegister />} />
           {/* <Route path="/signin" element={<SignIn />} /> */}
