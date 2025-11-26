@@ -1,52 +1,57 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Header from "../component/organisms/header.jsx"; // 공통 Header 재사용, 파일명 확인 필수
+import { useNavigate } from "react-router-dom";
+import Header from "../component/organisms/header.jsx";
+import { useAuth } from "../contexts/useAuth";
+import { updatePassword } from "../services/authService";
 
 const MyPage = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleChangePassword = async () => {
-    const newPassword = prompt("새 비밀번호를 입력하세요:");
+    const newPassword = prompt("새 비밀번호를 입력하세요 (숫자, 특수문자 포함 8자 이상):");
     if (!newPassword) return;
+
+    // Password validation
+    if (!/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/.test(newPassword)) {
+      alert("비밀번호는 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.");
+      return;
+    }
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:4000/api/change-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: "hwangjb", newPassword }),
+      const response = await updatePassword({
+        userId: user?.userId,
+        userPassword: newPassword
       });
-      const data = await res.json();
-      alert(data.message);
+      
+      if (response.success && response.data?.success) {
+        alert("비밀번호가 변경되었습니다.");
+      } else {
+        alert(response.error || response.message || "비밀번호 변경에 실패했습니다.");
+      }
     } catch (err) {
-      alert("서버 오류가 발생했습니다.");
+      if (err.response?.data?.error) {
+        alert(err.response.data.error);
+      } else {
+        alert("서버 오류가 발생했습니다.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeleteAccount = async () => {
-    if (!window.confirm("정말 탈퇴하시겠습니까?")) return;
-
-    try {
-      setLoading(true);
-      const res = await fetch("http://localhost:4000/api/delete-account", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: "hwangjb" }),
-      });
-      const data = await res.json();
-      alert(data.message);
-    } catch (err) {
-      alert("서버 오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
+  const handleLogout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      logout();
+      navigate("/");
     }
   };
 
   return (
     <Container>
-      {/* 공통 Header 사용 */}
       <Header />
 
       <Main>
@@ -56,8 +61,8 @@ const MyPage = () => {
           <ProfileCard>
             <ProfileImage />
             <UserInfo>
-              <UserName>황정빈</UserName>
-              <UserId>@hwangjb</UserId>
+              <UserName>{user?.userName || "사용자"}</UserName>
+              <UserId>@{user?.userId || "unknown"}</UserId>
             </UserInfo>
           </ProfileCard>
 
@@ -65,7 +70,7 @@ const MyPage = () => {
             <OptionItem onClick={handleChangePassword}>
               {loading ? "처리 중..." : "비밀번호 변경"}
             </OptionItem>
-            <OptionItem onClick={handleDeleteAccount}>회원탈퇴</OptionItem>
+            <OptionItem onClick={handleLogout}>로그아웃</OptionItem>
           </OptionList>
         </Section>
       </Main>

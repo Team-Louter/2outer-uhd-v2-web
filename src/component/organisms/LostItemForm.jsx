@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputField from '../molecules/InputField.jsx';
 import TextAreaField from '../molecules/TextAreaField.jsx';
 import CheckboxGroup from '../molecules/Checkbox.jsx';
 import FileUpload from '../molecules/FileUpload.jsx';
 import Button from '../atom/button.jsx';
 import styled from 'styled-components';
+import { useAuth } from '../../contexts/useAuth';
+import { createPost } from '../../services/postService';
 
 const FormContainer = styled.form`
   max-width: 800px;
@@ -31,6 +34,12 @@ const SubmitButtonContainer = styled.div`
   margin-top: 24px;
 `;
 
+const ErrorMessage = styled.div`
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+`;
+
 const categoryOptions = [
   { id: 'electronics', label: '전자기기' },
   { id: 'clothing', label: '의류/액세서리' },
@@ -43,6 +52,7 @@ const initialFormState = {
   description: '',
   categories: [],
   file: null,
+  imageUrl: '',
 };
 
 const formCopy = {
@@ -59,7 +69,7 @@ const formCopy = {
       description: '분실물에 대한 상세 설명을 입력하세요. (100자 이내)',
     },
     submitText: '분실물 등록',
-    endpoint: '/api/lost-item/register',
+    postStatus: 'LOST',
   },
   found: {
     labels: {
@@ -74,16 +84,20 @@ const formCopy = {
       description: '보관 장소나 전달 가능한 정보를 입력하세요. (100자 이내)',
     },
     submitText: '습득물 등록',
-    endpoint: '/api/found-item/register',
+    postStatus: 'FIND',
   },
 };
 
 const LostItemForm = ({ mode = 'lost' }) => {
-  // ✅ 입력값 상태 저장 (Controlled Components)
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const [form, setForm] = useState(initialFormState);
-  const { labels, placeholders, submitText, endpoint } = formCopy[mode] || formCopy.lost;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const { labels, placeholders, submitText, postStatus } = formCopy[mode] || formCopy.lost;
 
-  // ✅ 모든 필드 onChange 핸들러
+  // 모든 필드 onChange 핸들러
   const handleChange = (field, value) => {
     setForm((prev) => ({
       ...prev,
@@ -91,7 +105,7 @@ const LostItemForm = ({ mode = 'lost' }) => {
     }));
   };
 
-  // ✅ 체크박스 변경
+  // 체크박스 변경
   const handleCategoryChange = (values) => {
     setForm((prev) => ({
       ...prev,
@@ -99,52 +113,75 @@ const LostItemForm = ({ mode = 'lost' }) => {
     }));
   };
 
-  // ✅ 파일 업로드 변경
+  // 파일 업로드 변경 (URL로 처리)
   const handleFileChange = (file) => {
     setForm((prev) => ({
       ...prev,
       file
     }));
+    // 파일이 있으면 임시 URL 생성 (실제로는 파일 업로드 API 필요)
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setForm((prev) => ({
+        ...prev,
+        imageUrl: url
+      }));
+    }
   };
 
-  // ✅ 폼 제출
+  // 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
-    // ✅ 간단한 유효성 검사
-    if (!form.name || !form.location || !form.description) {
-      alert("모든 필수 항목을 입력하세요.");
+    // 로그인 확인
+    if (!isAuthenticated()) {
+      alert("게시글을 등록하려면 로그인이 필요합니다.");
+      navigate('/signin');
       return;
     }
 
-    // ✅ 서버로 보낼 FormData 구성 (파일 포함)
-    const formData = new FormData();
-    formData.append('name', form.name);
-    formData.append('location', form.location);
-    formData.append('description', form.description);
-    formData.append('categories', JSON.stringify(form.categories));
-    if (form.file) formData.append('file', form.file);
+    // 유효성 검사
+    if (!form.name || !form.location || !form.description) {
+      setError("모든 필수 항목을 입력하세요.");
+      return;
+    }
 
+    setLoading(true);
     try {
-      // ✅ localhost or server 둘 다 자동 처리되도록 환경변수 사용
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-      const response = await fetch(`${API_URL}${endpoint}`, {
-        method: 'POST',
-        body: formData,
+      // 게시글 내용을 조합 (위치 + 설명)
+      const postContent = `${form.location}\n\n${form.description}`;
+      
+      const response = await createPost({
+        userId: user.userId,
+        postTitle: form.name,
+        postContent: postContent,
+        postImage: form.imageUrl || '',
+        postStatus: postStatus
       });
 
-      if (!response.ok) throw new Error('서버 오류');
-
-      alert('등록이 완료되었습니다!');
-      setForm(initialFormState);
-    } catch (error) {
-      console.error(error);
-      alert('등록 중 문제가 발생했습니다.');
+      if (response.success && response.data) {
+        alert('등록이 완료되었습니다!');
+        setForm(initialFormState);
+        navigate(`/post-detail/${response.data.postId}`);
+      } else {
+        setError(response.error || response.message || '등록에 실패했습니다.');
+      }
+    } catch (err) {
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('등록 중 문제가 발생했습니다.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <FormContainer onSubmit={handleSubmit}>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      
       <FormContent>
         <LeftColumn>
           <InputField
@@ -153,6 +190,7 @@ const LostItemForm = ({ mode = 'lost' }) => {
             value={form.name}
             onChange={(e) => handleChange('name', e.target.value)}
             placeholder={placeholders.name}
+            disabled={loading}
           />
 
           <InputField
@@ -161,6 +199,7 @@ const LostItemForm = ({ mode = 'lost' }) => {
             value={form.location}
             onChange={(e) => handleChange('location', e.target.value)}
             placeholder={placeholders.location}
+            disabled={loading}
           />
 
           <TextAreaField
@@ -170,6 +209,7 @@ const LostItemForm = ({ mode = 'lost' }) => {
             onChange={(e) => handleChange('description', e.target.value)}
             placeholder={placeholders.description}
             maxLength={100}
+            disabled={loading}
           />
 
           <CheckboxGroup
@@ -186,8 +226,8 @@ const LostItemForm = ({ mode = 'lost' }) => {
         </RightColumn>
 
         <SubmitButtonContainer>
-          <Button type="submit" fullWidth size="large">
-            {submitText}
+          <Button type="submit" fullWidth size="large" disabled={loading}>
+            {loading ? '등록 중...' : submitText}
           </Button>
         </SubmitButtonContainer>
       </FormContent>
