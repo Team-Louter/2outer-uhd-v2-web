@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Input from "../atom/Input";
+import Input from "../atom/input";
 import Text from "../atom/text";
 import bgImage from '../../assets/search-section-bg.png';
 
