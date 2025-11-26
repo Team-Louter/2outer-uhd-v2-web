@@ -1,4 +1,5 @@
 import api from './api';
+import { getToken } from '../utils/storage';
 
 /**
  * Create a new post
@@ -86,8 +87,12 @@ export const searchPosts = async (keyword) => {
  * @returns {Promise}
  */
 export const deletePost = async (postId) => {
+  const token = getToken();
   const response = await api.delete(`/post/delete/${postId}`, {
-    data: { postId }
+    data: {
+      header: { token },
+      body: { postId }
+    }
   });
   return response.data;
 };
