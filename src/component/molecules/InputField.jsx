@@ -1,5 +1,5 @@
 import Label from '../atom/Label.jsx';
-import Input from '../atom/Input.jsx';
+import Input from '../atom/input.jsx';
 import styled from 'styled-components';
 
 const FieldContainer = styled.div`

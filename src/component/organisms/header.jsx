@@ -5,6 +5,7 @@ import Logo from '../atom/logo';
 import NavigationMenu from '../molecules/navigationMenu';
 import Button from '../atom/button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/useAuth';
 
 const HeaderContainer = styled.header`
   height: 5rem;
@@ -105,8 +106,15 @@ const CloseButton = styled.button`
   }
 `;
 
+const UserInfo = styled.span`
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 8px;
+`;
+
 const Header = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogoClick = () => {
@@ -114,11 +122,20 @@ const Header = () => {
   };
 
   const handleMyPageClick = () => {
-    navigate('/mypost');
+    if (isAuthenticated()) {
+      navigate('/mypost');
+    } else {
+      navigate('/signin');
+    }
   };
 
   const handlePostRegisterClick = () => {
-    setIsModalOpen(true);
+    if (isAuthenticated()) {
+      setIsModalOpen(true);
+    } else {
+      alert('게시글을 등록하려면 로그인이 필요합니다.');
+      navigate('/signin');
+    }
   };
 
   const handleFindRegisterClick = () => {
@@ -135,9 +152,16 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
-  const handleIndexPageClick = () => {
-    navigate('/')
-  }
+  const handleLoginClick = () => {
+    navigate('/signin');
+  };
+
+  const handleLogoutClick = () => {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      logout();
+      navigate('/');
+    }
+  };
 
   return (
     <HeaderContainer>
@@ -146,17 +170,42 @@ const Header = () => {
       </LogoContainer>
       <NavigationMenu />
       <ButtonContainer>
-        <Button 
-          onClick={handleMyPageClick} 
-          variant="secondary"
-        >
-          마이페이지
-        </Button>
-        <Button 
-          onClick={handlePostRegisterClick} $width={"100px"} $height={"40px"}
-        >
-          게시물 등록
-        </Button>
+        {isAuthenticated() ? (
+          <>
+            <UserInfo>{user?.userId}</UserInfo>
+            <Button 
+              onClick={handleMyPageClick} 
+              variant="secondary"
+            >
+              마이페이지
+            </Button>
+            <Button 
+              onClick={handlePostRegisterClick} $width={"100px"} $height={"40px"}
+            >
+              게시물 등록
+            </Button>
+            <Button 
+              onClick={handleLogoutClick} 
+              variant="secondary"
+            >
+              로그아웃
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button 
+              onClick={handleLoginClick} 
+              variant="secondary"
+            >
+              로그인
+            </Button>
+            <Button 
+              onClick={() => navigate('/signup-id')}
+            >
+              회원가입
+            </Button>
+          </>
+        )}
       </ButtonContainer>
       {isModalOpen && (
         <ModalOverlay onClick={handleCloseModal}>

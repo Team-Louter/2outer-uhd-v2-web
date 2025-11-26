@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthLayout from '../component/organisms/AuthLayout';
 import BrandMark from '../component/organisms/BrandMark';
+import { useAuth } from '../contexts/useAuth';
+import { login as loginApi } from '../services/authService';
 import {
   LoginForm,
   InputField,
@@ -15,12 +17,48 @@ import {
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [userId, setUserId] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
-    e. preventDefault();
-    console.log('로그인 처리');
-    // 로그인 성공 시 메인 페이지로 이동
-    // navigate('/');
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!userId || !userPassword) {
+      setError('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await loginApi({ userId, userPassword });
+      
+      if (response.success && response.data?.success) {
+        // Save login credentials using AuthContext
+        login(response.data.token, {
+          userId: response.data.userId,
+        });
+        
+        // Navigate to main page
+        navigate('/');
+      } else {
+        setError(response.error || response.message || '로그인에 실패했습니다.');
+      }
+    } catch (err) {
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('로그인 중 오류가 발생했습니다.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,23 +66,45 @@ function LoginPage() {
       <BrandMark />
       
       <LoginForm onSubmit={handleLogin}>
+        {error && (
+          <div style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '8px' }}>
+            {error}
+          </div>
+        )}
+        
         <InputField>
           <span>아이디</span>
-          <Input type="text" placeholder="아이디 입력" />
+          <Input 
+            type="text" 
+            placeholder="아이디 입력"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            disabled={loading}
+          />
         </InputField>
 
         <InputField>
           <span>비밀번호</span>
-          <Input type="password" placeholder="비밀번호 입력" />
+          <Input 
+            type="password" 
+            placeholder="비밀번호 입력"
+            value={userPassword}
+            onChange={(e) => setUserPassword(e.target.value)}
+            disabled={loading}
+          />
         </InputField>
 
         <RememberMe>
-          <input type="checkbox" />
+          <input 
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
           <span>아이디 저장</span>
         </RememberMe>
 
-        <PrimaryButton type="submit">
-          로그인
+        <PrimaryButton type="submit" disabled={loading}>
+          {loading ? '로그인 중...' : '로그인'}
         </PrimaryButton>
       </LoginForm>
 
