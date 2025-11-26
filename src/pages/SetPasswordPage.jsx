@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AuthLayout from '../component/organisms/AuthLayout';
 import { signup } from '../services/authService';
@@ -23,16 +23,22 @@ function SetPasswordPage() {
   const { name, username, email } = location.state || {};
 
   // Redirect if no signup data is available
-  if (!name || !username || !email) {
-    navigate('/signup-id');
-    return null;
-  }
+  useEffect(() => {
+    if (!name || !username || !email) {
+      navigate('/signup-id');
+    }
+  }, [name, username, email, navigate]);
 
   const passwordsMatch = password.length > 0 && password === passwordConfirm;
   const showPasswordStatus = password.length > 0 && passwordConfirm.length > 0;
 
   // Password validation (at least 8 characters, numbers and special characters)
   const isPasswordValid = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/.test(password);
+
+  // Don't render form if missing required data
+  if (!name || !username || !email) {
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

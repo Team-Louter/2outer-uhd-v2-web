@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputField from '../molecules/InputField.jsx';
 import TextAreaField from '../molecules/TextAreaField.jsx';
@@ -94,8 +94,18 @@ const LostItemForm = ({ mode = 'lost' }) => {
   const [form, setForm] = useState(initialFormState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const imageUrlRef = useRef(null);
   
   const { labels, placeholders, submitText, postStatus } = formCopy[mode] || formCopy.lost;
+
+  // Cleanup object URL on unmount or when file changes
+  useEffect(() => {
+    return () => {
+      if (imageUrlRef.current) {
+        URL.revokeObjectURL(imageUrlRef.current);
+      }
+    };
+  }, []);
 
   // 모든 필드 onChange 핸들러
   const handleChange = (field, value) => {
@@ -115,6 +125,12 @@ const LostItemForm = ({ mode = 'lost' }) => {
 
   // 파일 업로드 변경 (URL로 처리)
   const handleFileChange = (file) => {
+    // Revoke previous URL to prevent memory leak
+    if (imageUrlRef.current) {
+      URL.revokeObjectURL(imageUrlRef.current);
+      imageUrlRef.current = null;
+    }
+    
     setForm((prev) => ({
       ...prev,
       file
@@ -122,9 +138,15 @@ const LostItemForm = ({ mode = 'lost' }) => {
     // 파일이 있으면 임시 URL 생성 (실제로는 파일 업로드 API 필요)
     if (file) {
       const url = URL.createObjectURL(file);
+      imageUrlRef.current = url;
       setForm((prev) => ({
         ...prev,
         imageUrl: url
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        imageUrl: ''
       }));
     }
   };

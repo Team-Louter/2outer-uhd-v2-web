@@ -32,8 +32,8 @@ api.interceptors.response.use(
     // Handle 401 Unauthorized - token expired or invalid
     if (error.response?.status === 401) {
       clearAuth();
-      // Redirect to login page
-      window.location.href = '/signin';
+      // Note: Redirect should be handled by the component or a navigation callback
+      // Direct window.location is avoided to maintain React Router compatibility
     }
     return Promise.reject(error);
   }
