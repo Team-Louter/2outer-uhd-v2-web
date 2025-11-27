@@ -99,25 +99,27 @@ const MyPostPage = () => {
             <EmptyMessage>등록된 게시글이 없습니다.</EmptyMessage>
           )}
 
-          <PostList>
-            {posts.map((post) => (
-              <PostItem key={post.postId}>
-                <PostContent onClick={() => handlePostClick(post.postId)}>
-                  <PostBadge $status={post.postStatus}>
-                    {post.postStatus === "FIND" ? "습득물" : "분실물"}
-                  </PostBadge>
-                  <PostTitle>{post.postTitle}</PostTitle>
-                  <PostMeta>
-                    <span>{formatDate(post.postCreatedAt)}</span>
-                    <span>조회 {post.viewers || 0}</span>
-                  </PostMeta>
-                </PostContent>
-                <DeleteButton onClick={() => handleDeletePost(post.postId)}>
-                  삭제
-                </DeleteButton>
-              </PostItem>
-            ))}
-          </PostList>
+          {!loading && !error && posts.length > 0 && (
+            <PostList>
+              {posts.map((post) => (
+                <PostItem key={post.postId}>
+                  <PostContent onClick={() => handlePostClick(post.postId)}>
+                    <PostBadge $status={post.postStatus}>
+                      {post.postStatus === "FIND" ? "습득물" : "분실물"}
+                    </PostBadge>
+                    <PostTitle>{post.postTitle}</PostTitle>
+                    <PostMeta>
+                      <span>{formatDate(post.postCreatedAt)}</span>
+                      <span>조회 {post.viewers || 0}</span>
+                    </PostMeta>
+                  </PostContent>
+                  <DeleteButton onClick={() => handleDeletePost(post.postId)}>
+                    삭제
+                  </DeleteButton>
+                </PostItem>
+              ))}
+            </PostList>
+          )}
         </Section>
       </Main>
     </Container>
