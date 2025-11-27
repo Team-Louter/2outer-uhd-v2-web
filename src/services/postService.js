@@ -62,12 +62,34 @@ export const getPostByTitle = async (postTitle) => {
 };
 
 /**
- * Get posts by user ID
+ * Get posts by user ID with detailed information
  * @param {string} userId - User ID
  * @returns {Promise}
  */
 export const getPostsByUser = async (userId) => {
   const response = await api.get(`/post/user/${userId}`);
+  
+  // If successful, fetch detailed information for each post
+  if (response.data.success && response.data.data) {
+    const posts = response.data.data;
+    const detailedPosts = await Promise.all(
+      posts.map(async (post) => {
+        try {
+          const detailResponse = await api.get(`/post/id/${post.postId}`);
+          if (detailResponse.data.success && detailResponse.data.data) {
+            return detailResponse.data.data;
+          }
+          return post;
+        } catch (error) {
+          // If fetching details fails, return the basic post info
+          console.warn(`Failed to fetch details for post ${post.postId}:`, error);
+          return post;
+        }
+      })
+    );
+    return { ...response.data, data: detailedPosts };
+  }
+  
   return response.data;
 };
 
@@ -94,9 +116,11 @@ export const deletePost = async (postId) => {
 
   const token = getToken();
   const response = await api.delete(`/post/delete/${postId}`, {
+    headers: {
+      token: token
+    },
     data: {
-      header: { token },
-      body: { postId }
+      postId: postId
     }
   });
   return response.data;
