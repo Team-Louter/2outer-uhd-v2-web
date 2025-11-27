@@ -1,4 +1,5 @@
 import api from './api';
+import { getToken } from '../utils/storage';
 
 /**
  * Create a new comment
@@ -57,7 +58,12 @@ export const getCommentsByUser = async (userId) => {
  * @returns {Promise}
  */
 export const updateComment = async (commentId, data) => {
-  const response = await api.put(`/comment/update/${commentId}`, data);
+  const token = getToken();
+  const response = await api.put(`/comment/update/${commentId}`, data, {
+    headers: {
+      token: token
+    }
+  });
   return response.data;
 };
 
