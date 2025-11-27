@@ -47,9 +47,6 @@ export const getPostsByStatus = async (status) => {
  * @returns {Promise}
  */
 export const getPostById = async (postId) => {
-  const token = getToken();
-  console.log('getPostById - Current token:', token ? 'Token exists' : 'No token');
-  
   const response = await api.get(`/post/id/${postId}`);
   return response.data;
 };

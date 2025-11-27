@@ -27,16 +27,11 @@ export const AuthProvider = ({ children }) => {
    * @throws {Error} if token is invalid
    */
   const login = (authToken, userData) => {
-    // Validate token before saving
-    if (!authToken || authToken === 'undefined' || authToken === 'null') {
-      console.error('Attempted to login with invalid token:', authToken);
+    // Validate token before saving - use type checks
+    if (authToken === undefined || authToken === null || authToken === '') {
+      console.error('Attempted to login with invalid token');
       throw new Error('유효하지 않은 토큰입니다');
     }
-    
-    console.log('AuthContext: Saving token and user data', {
-      token: authToken.substring(0, 20) + '...',
-      user: userData
-    });
     
     setToken(authToken);
     setUser(userData);
