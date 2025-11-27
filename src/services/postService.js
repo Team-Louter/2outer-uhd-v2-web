@@ -116,7 +116,7 @@ export const deletePost = async (postId) => {
 
   const token = getToken();
   if (!token) {
-    throw new Error('Authentication required');
+    throw new Error('인증 토큰이 없습니다. 다시 로그인해주세요.');
   }
   const response = await api.delete(`/post/delete/${postId}`, {
     headers: {
