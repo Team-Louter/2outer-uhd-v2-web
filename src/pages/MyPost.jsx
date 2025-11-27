@@ -40,7 +40,7 @@ const MyPostPage = () => {
   }, [user?.userId]);
 
   const handleDeletePost = async (postId) => {
-    if (postId === undefined || postId === null) {
+    if (postId == null) {
       console.error("handleDeletePost: postId is undefined or null");
       alert("게시글 ID가 유효하지 않습니다.");
       return;
