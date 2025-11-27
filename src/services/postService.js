@@ -86,6 +86,13 @@ export const searchPosts = async (keyword) => {
  * @returns {Promise}
  */
 export const deletePost = async (postId) => {
-  const response = await api.delete(`/post/delete/${postId}`);
+  const token = getToken();
+  const response = await api.delete(/post/delete/${postId}, {
+    data: {
+      header: {
+        Authorization: Bearer ${token}
+      }
+    }
+  });
   return response.data;
 };
