@@ -60,7 +60,7 @@ export const getCommentsByUser = async (userId) => {
 export const updateComment = async (commentId, data) => {
   const token = getToken();
   if (!token) {
-    throw new Error('Authentication required');
+    throw new Error('인증 토큰이 없습니다. 다시 로그인해주세요.');
   }
   const response = await api.put(`/comment/update/${commentId}`, data, {
     headers: {

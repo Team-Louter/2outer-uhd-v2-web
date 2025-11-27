@@ -34,8 +34,12 @@ api.interceptors.response.use(
     // Handle 401 Unauthorized - token expired or invalid
     if (error.response?.status === 401) {
       clearAuth();
-      // Note: Redirect should be handled by the component or a navigation callback
-      // Direct window.location is avoided to maintain React Router compatibility
+      // Show user-friendly message
+      console.error('인증이 만료되었습니다. 다시 로그인해주세요.');
+      // Redirect to login page
+      if (window.location.pathname !== '/signin') {
+        window.location.href = '/signin';
+      }
     }
     return Promise.reject(error);
   }
