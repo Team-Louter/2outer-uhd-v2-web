@@ -59,9 +59,12 @@ export const getCommentsByUser = async (userId) => {
  */
 export const updateComment = async (commentId, data) => {
   const token = getToken();
+  if (!token) {
+    throw new Error('Authentication required');
+  }
   const response = await api.put(`/comment/update/${commentId}`, data, {
     headers: {
-      token: token
+      token
     }
   });
   return response.data;

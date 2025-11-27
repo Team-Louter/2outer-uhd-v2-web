@@ -115,12 +115,15 @@ export const deletePost = async (postId) => {
   }
 
   const token = getToken();
+  if (!token) {
+    throw new Error('Authentication required');
+  }
   const response = await api.delete(`/post/delete/${postId}`, {
     headers: {
-      token: token
+      token
     },
     data: {
-      postId: postId
+      postId
     }
   });
   return response.data;

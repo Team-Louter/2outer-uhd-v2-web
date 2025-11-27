@@ -15,7 +15,7 @@ api.interceptors.request.use(
     const token = getToken();
     // Only add Authorization header if custom token header is not present
     // Some endpoints require raw token in 'token' header instead of Bearer token
-    if (token && !config.headers.token) {
+    if (token && !('token' in config.headers)) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
