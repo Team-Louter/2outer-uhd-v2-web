@@ -4,11 +4,37 @@ const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
 
 /**
- * Save token to localStorage
+ * Validate token format
+ * @param {string} token - JWT token to validate
+ * @returns {boolean} - true if token is valid format
+ */
+export const validateToken = (token) => {
+  if (!token || typeof token !== 'string') {
+    console.error('Invalid token: must be a non-empty string');
+    return false;
+  }
+  
+  // JWT tokens have 3 parts separated by dots
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    console.error('Invalid token format: JWT must have 3 parts');
+    return false;
+  }
+  
+  return true;
+};
+
+/**
+ * Save token to localStorage with validation
  * @param {string} token - JWT token
+ * @throws {Error} if token is invalid
  */
 export const saveToken = (token) => {
+  if (!validateToken(token)) {
+    throw new Error('Cannot save invalid token');
+  }
   localStorage.setItem(TOKEN_KEY, token);
+  console.log('Token saved successfully');
 };
 
 /**

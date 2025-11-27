@@ -37,11 +37,26 @@ function LoginPage() {
     try {
       const response = await loginApi({ userId, userPassword });
       
+      // Log response for debugging
+      console.log('Login API Response:', response);
+      
+      // Check nested data structure: response.data contains success, token, userId
       if (response.success && response.data?.success) {
+        const { token, userId: returnedUserId } = response.data;
+        
+        // Validate token exists
+        if (!token) {
+          console.error('Token is missing from response:', response);
+          setError('로그인 응답에 토큰이 없습니다. 서버 관리자에게 문의하세요.');
+          return;
+        }
+        
         // Save login credentials using AuthContext
-        login(response.data.token, {
-          userId: response.data.userId,
+        login(token, {
+          userId: returnedUserId || userId,
         });
+        
+        console.log('Login successful, token saved');
         
         // Navigate to main page
         navigate('/');
@@ -49,7 +64,12 @@ function LoginPage() {
         setError(response.error || response.message || '로그인에 실패했습니다.');
       }
     } catch (err) {
-      if (err.response?.data?.error) {
+      console.error('Login error:', err);
+      
+      // Handle CORS errors
+      if (err.message === 'Network Error' || err.code === 'ERR_NETWORK') {
+        setError('서버에 연결할 수 없습니다. CORS 설정을 확인해주세요.');
+      } else if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else if (err.response?.data?.message) {
         setError(err.response.data.message);

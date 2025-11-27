@@ -24,8 +24,15 @@ export const AuthProvider = ({ children }) => {
    * Login user and save credentials
    * @param {string} authToken - JWT token from login response
    * @param {object} userData - User data object { userId, userName }
+   * @throws {Error} if token is invalid
    */
   const login = (authToken, userData) => {
+    // Validate token before saving - use type checks
+    if (authToken === undefined || authToken === null || authToken === '') {
+      console.error('Attempted to login with invalid token');
+      throw new Error('유효하지 않은 토큰입니다');
+    }
+    
     setToken(authToken);
     setUser(userData);
     saveToken(authToken);
