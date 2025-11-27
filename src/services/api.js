@@ -13,7 +13,9 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = getToken();
-    if (token) {
+    // Only add Authorization header if custom token header is not present
+    // Some endpoints require raw token in 'token' header instead of Bearer token
+    if (token && !('token' in config.headers)) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
