@@ -195,6 +195,12 @@ const PostDetail = () => {
   };
 
   const handleDeletePost = async () => {
+    if (id === undefined || id === null) {
+      console.error("handleDeletePost: id is undefined or null");
+      alert("게시글 ID가 유효하지 않습니다.");
+      return;
+    }
+
     if (!window.confirm("게시글을 삭제하시겠습니까?")) return;
 
     try {

@@ -87,6 +87,11 @@ export const searchPosts = async (keyword) => {
  * @returns {Promise}
  */
 export const deletePost = async (postId) => {
+  if (postId === undefined || postId === null) {
+    console.error("deletePost: postId is undefined or null");
+    throw new Error("유효하지 않은 게시글 ID입니다.");
+  }
+
   const token = getToken();
   const response = await api.delete(`/post/delete/${postId}`, {
     data: {

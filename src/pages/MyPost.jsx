@@ -40,6 +40,12 @@ const MyPostPage = () => {
   }, [user?.userId]);
 
   const handleDeletePost = async (postId) => {
+    if (postId === undefined || postId === null) {
+      console.error("handleDeletePost: postId is undefined or null");
+      alert("게시글 ID가 유효하지 않습니다.");
+      return;
+    }
+
     if (!window.confirm("정말 이 게시글을 삭제하시겠습니까?")) return;
 
     try {
