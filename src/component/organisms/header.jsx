@@ -123,7 +123,7 @@ const Header = () => {
 
   const handleMyPageClick = () => {
     if (isAuthenticated()) {
-      navigate('/mypost');
+      navigate('/mypage');
     } else {
       navigate('/signin');
     }

@@ -5,7 +5,7 @@ const USER_KEY = 'auth_user';
 
 /**
  * Validate token format
- * @param {string} token - JWT token to validate
+ * @param {string} token - Token to validate
  * @returns {boolean} - true if token is valid format
  */
 export const validateToken = (token) => {
@@ -14,10 +14,10 @@ export const validateToken = (token) => {
     return false;
   }
   
-  // JWT tokens have 3 parts separated by dots
-  const parts = token.split('.');
-  if (parts.length !== 3) {
-    console.error('Invalid token format: JWT must have 3 parts');
+  // Accept any non-empty string as a valid token
+  // This allows for different token formats (JWT, session IDs, etc.)
+  if (token.trim().length === 0) {
+    console.error('Invalid token: token cannot be empty or whitespace only');
     return false;
   }
   
