@@ -26,7 +26,7 @@ export const validateToken = (token) => {
 
 /**
  * Save token to localStorage with validation
- * @param {string} token - JWT token
+ * @param {string} token - Authentication token
  * @throws {Error} if token is invalid
  */
 export const saveToken = (token) => {
@@ -39,7 +39,7 @@ export const saveToken = (token) => {
 
 /**
  * Get token from localStorage
- * @returns {string|null} - JWT token or null
+ * @returns {string|null} - Token or null
  */
 export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY);
